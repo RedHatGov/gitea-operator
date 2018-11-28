@@ -1,0 +1,44 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: gitea-operator
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - services
+  - endpoints
+  - persistentvolumeclaims
+  - configmaps
+  - secrets
+  - routes
+  - serviceaccounts
+  verbs:
+  - create
+  - update
+  - delete
+  - get
+  - list
+  - watch
+  - patch
+  # Enable this if operator-metering is installed in your cluster.
+  #- apiGroups:
+  #- monitoring.coreos.com
+  #resources:
+  #- servicemonitors
+  #verbs:
+  #- "get"
+  #- "create"
+- apiGroups:
+  - gitea.opentlc.com
+  resources:
+  - gitea
+  verbs:
+  - create
+  - update
+  - delete
+  - get
+  - list
+  - watch
+  - patch

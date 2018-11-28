@@ -1,0 +1,20 @@
+---
+apiVersion: authorization.openshift.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    rbac.authorization.k8s.io/aggregate-to-admin: "true"
+  name: gitea-admin-rules
+rules:
+- apiGroups:
+  - gpte.opentlc.com
+  resources:
+  - gitea
+  verbs:
+  - create
+  - update
+  - delete
+  - get
+  - list
+  - watch
+  - patch
