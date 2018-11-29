@@ -26,7 +26,7 @@ Perform the following tasks as *cluster-admin*:
 +
 [source,sh]
 ----
-oc create -f https://raw.githubusercontent.com/wkulhanek/gitea-operator/master/deploy/crds/gitea_v1alpha1_gitea_crd.yaml
+oc create -f https://raw.githubusercontent.com/wkulhanek/gitea-operator/master/deploy/crds/gpte_v1alpha1_gitea_crd.yaml
 ----
 
 . Deploy the `gitea-admin-rules` Cluster Role (which will be granted automatically to everyone with `admin` privileges):
@@ -79,7 +79,7 @@ oc create -f https://raw.githubusercontent.com/wkulhanek/gitea-operator/master/d
 
 == Deploying a Gitea Server using the Operator
 
-The Gitea Server is deployed by creating a Custom Resource based on the gitea Custom Resource Definition. There is an example of a Gitea CR at https://raw.githubusercontent.com/wkulhanek/gitea-operator/master/deploy/crds/gitea_v1alpha1_gitea_cr.yaml.
+The Gitea Server is deployed by creating a Custom Resource based on the gitea Custom Resource Definition. There is an example of a Gitea CR at https://raw.githubusercontent.com/wkulhanek/gitea-operator/master/deploy/crds/gpte_v1alpha1_gitea_cr.yaml.
 
 The Gitea Operator understands the following settings under it's *spec* setting:
 
@@ -90,7 +90,7 @@ The Gitea Operator understands the following settings under it's *spec* setting:
 .Example
 [source,texinfo]
 ----
-apiVersion: gitea.opentlc.com/v1alpha1
+apiVersion: gpte.opentlc.com/v1alpha1
 kind: Gitea
 metadata:
   name: gitea-server

@@ -1,4 +1,4 @@
-apiVersion: gitea.opentlc.com/v1alpha1
+apiVersion: gpte.opentlc.com/v1alpha1
 kind: Gitea
 metadata:
   name: gitea-server
