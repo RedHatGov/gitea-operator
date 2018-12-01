@@ -14,6 +14,7 @@ rules:
   - configmaps
   - secrets
   - routes
+  - serviceaccounts
   verbs:
   - create
   - update
