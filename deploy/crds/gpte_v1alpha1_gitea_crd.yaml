@@ -7,7 +7,7 @@ spec:
   names:
     kind: Gitea
     listKind: GiteaList
-    plural: giteas
+    plural: gitea
     singular: gitea
   scope: Namespaced
   version: v1alpha1
