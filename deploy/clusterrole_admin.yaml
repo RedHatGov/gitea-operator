@@ -9,7 +9,7 @@ rules:
 - apiGroups:
   - gpte.opentlc.com
   resources:
-  - gitea
+  - giteas
   verbs:
   - create
   - update
