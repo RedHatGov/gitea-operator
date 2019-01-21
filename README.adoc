@@ -127,6 +127,7 @@ The Gitea Operator understands the following settings under it's *spec* setting:
 * postgresqlVolumeSize: The size of the Persistent Volume to be created for the PostgreSQL database (e.g. 4Gi)
 * giteaVolumeSize: The size of the Persistent Volume to be created for the Gitea database (e.g. 4Gi)
 * giteaSsl: Weather the created route should be a HTTP (false) or HTTPS (true) route.
+* giteaServiceName: Optional. The name of the gitea service. The default is "gitea-metadata.name" where _metadata.name_ is the name of the CR object (in the example below `gitea-server`). When specifying this parameter ensure that the service name does not already exist in the project/namespace.
 
 .Example
 [source,texinfo]
@@ -139,6 +140,7 @@ spec:
   postgresqlVolumeSize: 4Gi
   giteaVolumeSize: 4Gi
   giteaSsl: True
+  giteaServiceName: mygitea
 ----
 
 . Write the definition to a file (e.g. gitea-server.yaml) and then create the Gitea instance:
