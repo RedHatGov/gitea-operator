@@ -34,6 +34,7 @@ rules:
   - gpte.opentlc.com
   resources:
   - giteas
+  - giteas/status
   verbs:
   - create
   - update
