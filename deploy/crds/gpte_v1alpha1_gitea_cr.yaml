@@ -1,8 +1,7 @@
 apiVersion: gpte.opentlc.com/v1alpha1
 kind: Gitea
 metadata:
-  name: gitea-server
+  name: example-gitea
 spec:
-  postgresqlVolumeSize: 4Gi
-  giteaVolumeSize: 4Gi
-  giteaSsl: True
+  # Add fields here
+  size: 3
