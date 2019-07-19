@@ -14,18 +14,34 @@ spec:
     spec:
       serviceAccountName: gitea-operator
       containers:
-        - name: gitea-operator
-          image: quay.io/wkulhanek/gitea-operator/v0.0.6
-          ports:
-          - containerPort: 60000
-            name: metrics
-          imagePullPolicy: Always
+        - name: ansible
+          command:
+          - /usr/local/bin/ao-logs
+          - /tmp/ansible-operator/runner
+          - stdout
+          image: quay.io/wkulhanek/gitea-operator/v0.9.0
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+          - mountPath: /tmp/ansible-operator/runner
+            name: runner
+            readOnly: true
+        - name: operator
+          image: quay.io/wkulhanek/gitea-operator/v0.9.0
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+          - mountPath: /tmp/ansible-operator/runner
+            name: runner
           env:
             - name: WATCH_NAMESPACE
-              value: ""
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
             - name: POD_NAME
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
               value: "gitea-operator"
+      volumes:
+        - name: runner
+          emptyDir: {}
