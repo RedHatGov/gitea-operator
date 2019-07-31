@@ -1,4 +1,7 @@
 #!/bin/bash
+SDK_RELEASE=v0.9
+MINOR_RELEASE=1
+
 # Update latest Roles
 rm -rf roles/*
 git clone https://github.com/redhat-gpte-devopsautomation/ansible-operator-roles
@@ -8,5 +11,9 @@ cp ansible-operator-roles/playbooks/gitea.yaml ./playbook.yml
 rm -rf ansible-operator-roles
 
 # Now build the Operator
-operator-sdk build quay.io/wkulhanek/gitea-operator:v0.9.0
-docker push quay.io/wkulhanek/gitea-operator:v0.9.0
+operator-sdk build quay.io/gpte-devops-automation/gitea-operator:${SDK_RELEASE}.${MINOR_RELEASE}
+docker tag quay.io/gpte-devops-automation/gitea-operator:${SDK_RELEASE}.${MINOR_RELEASE} quay.io/gpte-devops-automation/gitea-operator:latest
+docker tag quay.io/gpte-devops-automation/gitea-operator:${SDK_RELEASE}.${MINOR_RELEASE} quay.io/gpte-devops-automation/gitea-operator:${SDK_RELEASE}
+docker push quay.io/gpte-devops-automation/gitea-operator:${SDK_RELEASE}.${MINOR_RELEASE}
+docker push quay.io/gpte-devops-automation/gitea-operator:${SDK_RELEASE}
+docker push quay.io/gpte-devops-automation/gitea-operator:latest
