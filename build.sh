@@ -1,6 +1,6 @@
 #!/bin/bash
-SDK_RELEASE=v0.9
-MINOR_RELEASE=3
+SDK_RELEASE=v0.10
+MINOR_RELEASE=0
 
 # Update latest Roles
 rm -rf roles/*
