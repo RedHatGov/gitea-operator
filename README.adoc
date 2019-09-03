@@ -16,10 +16,6 @@ Before running the script make sure to update the location of the container imag
 
 == Installation
 
-=== Common Installation Steps
-
-The installation of the Custom Resource Definition and Cluster Role requires *cluster-admin* privileges. After that regular users with `admin` privileges on their projects (which is automatically granted to the user who creates a project) can provision the Gitea Operator in their projects and deploy instances of Gitea using the gitea.gpte.opentlc.com Custom Resource.
-
 Perform the following tasks as *cluster-admin*:
 
 . Deploy the Custom Resource Definition:
@@ -29,22 +25,11 @@ Perform the following tasks as *cluster-admin*:
 oc create -f https://raw.githubusercontent.com/wkulhanek/gitea-operator/master/deploy/crds/gpte_v1alpha1_gitea_crd.yaml
 ----
 
-. Deploy the `gitea-admin-rules` Cluster Role (which will be granted automatically to everyone with `admin` privileges). This role allows every project admin to create Gitea custom resources:
-+
-[source,sh]
-----
-oc create -f https://raw.githubusercontent.com/wkulhanek/gitea-operator/master/deploy/clusterrole_admin.yaml
-----
-
-=== Clusterwide Installation
-
-Perform the following tasks as *cluster-admin*:
-
 . Create the Cluster Role for the Operator
 +
 [source,sh]
 ----
-oc create -f https://raw.githubusercontent.com/wkulhanek/gitea-operator/master/deploy/clusterrole.yaml
+oc create -f https://raw.githubusercontent.com/wkulhanek/gitea-operator/master/deploy/cluster_role.yaml
 ----
 
 . Create a project for the operator to run in (different from where the application will be running)
@@ -54,66 +39,25 @@ oc create -f https://raw.githubusercontent.com/wkulhanek/gitea-operator/master/d
 oc new-project gpte-operators --display-name="GPTE Operators"
 ----
 
-. Deploy the *gitea-operator* service account:
+. Deploy the *gitea-operator* service account (replace the project name with your project name):
 +
 [source,sh]
 ----
-oc create -f https://raw.githubusercontent.com/wkulhanek/gitea-operator/master/deploy/service_account.yaml
+oc create sa gitea-operator -n gpte-operators
 ----
 
-. Grant the *gitea-cluster-operator* role to the *gitea-operator* service account (if your project is not `gpte-operators` change the project name in the command):
+. Grant the *gitea-operator* role to the *gitea-operator* service account (if your project is not `gpte-operators` change the project name in the command):
 +
 [source,sh]
 ----
-oc adm policy add-cluster-role-to-user gitea-cluster-operator system:serviceaccount:gpte-operators:gitea-operator
+oc adm policy add-cluster-role-to-user gitea-operator system:serviceaccount:gpte-operators:gitea-operator
 ----
 
 . And finally create the Gitea *Operator*:
 +
 [source,sh]
 ----
-oc create -f https://raw.githubusercontent.com/wkulhanek/gitea-operator/master/deploy/cluster_operator.yaml
-----
-
-. Once the Operator pod is running the Operator is ready to start creating Gitea Servers.
-
-=== Local Installation in a Project
-
-The next steps work either as *cluster-admin* or as a *regular user*.
-
-. Create a new project in which to deploy Gitea:
-+
-[source,sh]
-----
-oc new-project gitea --display-name "Gitea Server"
-----
-
-. Deploy the *gitea-operator* service account:
-+
-[source,sh]
-----
-oc create -f https://raw.githubusercontent.com/wkulhanek/gitea-operator/master/deploy/service_account.yaml
-----
-
-. Deploy the *gitea-operator* role:
-+
-[source,sh]
-----
-oc create -f https://raw.githubusercontent.com/wkulhanek/gitea-operator/master/deploy/role.yaml
-----
-
-. Grant the *gitea-operator* role to the *gitea-operator* service account:
-+
-[source,sh]
-----
-oc create -f https://raw.githubusercontent.com/wkulhanek/gitea-operator/master/deploy/rolebinding.yaml
-----
-
-. And finally create the Gitea *Operator*:
-+
-[source,sh]
-----
-oc create -f https://raw.githubusercontent.com/wkulhanek/gitea-operator/master/deploy/operator.yaml
+oc create -f https://raw.githubusercontent.com/wkulhanek/gitea-operator/master/deploy/operator.yaml -n gpte-operators
 ----
 
 . Once the Operator pod is running the Operator is ready to start creating Gitea Servers.
@@ -127,7 +71,8 @@ The Gitea Operator understands the following settings under it's *spec* setting:
 * postgresqlVolumeSize: The size of the Persistent Volume to be created for the PostgreSQL database (e.g. 4Gi)
 * giteaVolumeSize: The size of the Persistent Volume to be created for the Gitea database (e.g. 4Gi)
 * giteaSsl: Weather the created route should be a HTTP (false) or HTTPS (true) route.
-* giteaServiceName: Optional. The name of the gitea service. The default is "gitea-metadata.name" where _metadata.name_ is the name of the CR object (in the example below `gitea-server`). When specifying this parameter ensure that the service name does not already exist in the project/namespace.
+* giteaServiceName: Optional. The name of the gitea service. The default is "metadata.name" where _metadata.name_ is the name of the CR object (in the example below `gitea-server`). When specifying this parameter ensure that the service name does not already exist in the project/namespace.
+* giteaRoute: The fully qualified route of the Gitea route to be created. This route must be reachable via ingress controllers.
 
 .Example
 [source,texinfo]
@@ -185,13 +130,13 @@ In case you wish to uninstall the Gitea Operator make sure that there are no mor
 
 [source,sh]
 ----
-oc delete project gitea
+oc delete project gpte-operators
 ----
 
 Then as *cluster-admin* delete the ClusterRole and Custom Resource:
 
 [source,sh]
 ----
-oc delete clusterrole gitea-admin-rules
+oc delete clusterrole gitea-operator
 oc delete crd gitea.gpte.opentlc.com
 ----
