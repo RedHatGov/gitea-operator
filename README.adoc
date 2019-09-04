@@ -72,7 +72,7 @@ The Gitea Operator understands the following settings under it's *spec* setting:
 * giteaVolumeSize: The size of the Persistent Volume to be created for the Gitea database (e.g. 4Gi)
 * giteaSsl: Weather the created route should be a HTTP (false) or HTTPS (true) route.
 * giteaServiceName: Optional. The name of the gitea service. The default is "metadata.name" where _metadata.name_ is the name of the CR object (in the example below `gitea-server`). When specifying this parameter ensure that the service name does not already exist in the project/namespace.
-* giteaRoute: The fully qualified route of the Gitea route to be created. This route must be reachable via ingress controllers.
+* giteaRoute: Optinal. The fully qualified route of the Gitea route to be created. This route must be reachable via ingress controllers.
 
 .Example
 [source,texinfo]
