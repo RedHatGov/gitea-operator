@@ -18,7 +18,7 @@ Before running the script make sure to update the location of the container imag
 
 Perform the following tasks as *cluster-admin*:
 
-. Deploy the Custom Resource Definition:
+. First Deploy the Custom Resource Definition:
 +
 [source,sh]
 ----
