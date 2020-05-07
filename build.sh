@@ -1,5 +1,5 @@
 #!/bin/bash
-SDK_RELEASE=v0.12
+SDK_RELEASE=v0.17
 MINOR_RELEASE=0
 
 # Update latest Roles
