@@ -5,6 +5,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: gitea-operator
+  namespace: REPLACE_ME
 roleRef:
   kind: ClusterRole
   name: gitea-operator

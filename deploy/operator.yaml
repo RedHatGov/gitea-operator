@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,9 +14,20 @@ spec:
     spec:
       serviceAccountName: gitea-operator
       containers:
-        - name: gitea-operator
-          image: quay.io/gpte-devops-automation/gitea-operator:v0.17
-          imagePullPolicy: "Always"
+        - name: ansible
+          command:
+          - /usr/local/bin/ao-logs
+          - /tmp/ansible-operator/runner
+          - stdout
+          image: quay.io/gpte-devops-automation/gitea-operator:v0.12
+          imagePullPolicy: Always
+          volumeMounts:
+          - mountPath: /tmp/ansible-operator/runner
+            name: runner
+            readOnly: true
+        - name: operator
+          image: quay.io/gpte-devops-automation/gitea-operator:v0.12
+          imagePullPolicy: Always
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
             name: runner

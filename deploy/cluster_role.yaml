@@ -1,7 +1,6 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  creationTimestamp: null
   name: gitea-operator
 rules:
 - apiGroups:
@@ -18,24 +17,24 @@ rules:
   - serviceaccounts
   verbs:
   - create
+  - update
   - delete
   - get
   - list
-  - patch
-  - update
   - watch
+  - patch
 - apiGroups:
   - apps
   resources:
   - deployments
   verbs:
   - create
+  - update
   - delete
   - get
   - list
-  - patch
-  - update
   - watch
+  - patch
 - apiGroups:
   - monitoring.coreos.com
   resources:
@@ -61,7 +60,6 @@ rules:
   - apps
   resources:
   - replicasets
-  - deployments
   verbs:
   - get
 - apiGroups:
@@ -80,12 +78,13 @@ rules:
 - apiGroups:
   - gpte.opentlc.com
   resources:
-  - '*'
+  - giteas
+  - giteas/status
   verbs:
   - create
+  - update
   - delete
   - get
   - list
-  - patch
-  - update
   - watch
+  - patch
