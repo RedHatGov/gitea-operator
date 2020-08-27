@@ -20,10 +20,10 @@ This role also requires a PostgreSQL Database to be running in the same Namespac
 |_gitea_postgresql_password     |sonar                        |Yes          |Database Password
 |_gitea_persistent              |True                         |No           |Whether to make a PVC for Gitea
 |_gitea_volume_size             |1Gi                          |No           |Size of Persistent Volume to be created
-|_gitea_memory_request          |2Gi                          |No           |Minimum Memory Requirement
-|_gitea_memory_limit            |3Gi                          |No           |Maximum Memory Requirement
-|_gitea_cpu_request             |1                            |No           |Minimum CPU Requirement
-|_gitea_cpu_limit               |2                            |No           |Maximum CPU Requirement
+|_gitea_memory_request          |512Mi                        |No           |Minimum Memory Requirement
+|_gitea_memory_limit            |512Mi                        |No           |Maximum Memory Requirement
+|_gitea_cpu_request             |200m                         |No           |Minimum CPU Requirement
+|_gitea_cpu_limit               |500m                         |No           |Maximum CPU Requirement
 |_gitea_wait_for_init           |True                         |No           |Wait for the database pod to be running and ready
 |_gitea_image                   |quay.io/redhatgov/gitea      |No           |Container image for Gitea
 |_gitea_image_tag               |latest                       |No           |Tag for Gitea container image
