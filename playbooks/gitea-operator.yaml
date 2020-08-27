@@ -1,0 +1,55 @@
+---
+# Persistent Gitea deployment playbook.
+
+# The following variables come from the ansible-operator
+# - ansible_operator_meta.namespace
+# - ansible_operator_meta.name (from the name of the CR)
+
+
+- hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: Set up PostgreSQL
+    include_role:
+      name: ./roles/postgresql-ocp
+    vars:
+      _postgresql_namespace: "{{ meta.namespace }}"
+      _postgresql_name: "postgresql-{{ meta.name }}"
+
+      _postgresql_database_name: "giteadb"
+      _postgresql_user: "giteauser"
+      _postgresql_password: "giteapassword"
+
+      _postgresql_persistent: "{{ persistent | default(True) }}"
+      _postgresql_volume_size: "{{ postgresql.volumeSize | default('1Gi') }}"
+
+      _postgresql_image: "{{ postgresql.image.src | default('registry.redhat.io/rhel8/postgresql-10') }}"
+      _postgresql_image_tag: "{{ postgresql.image.tag | default('latest') }}"
+
+  - name: Set up Gitea
+    include_role:
+      name: ./roles/gitea-ocp
+    vars:
+      _gitea_namespace: "{{ ansible_operator_meta.namespace }}"
+      _gitea_name: "{{ gitea_service_name | default(ansible_operator_meta.name) }}"
+
+      _gitea_expose_method: "{{ gitea.expose.kind | default('Route') }}"
+      _gitea_expose_uri: "{{ gitea.expose.uri | default('') }}"
+      _gitea_ssl: "{{ gitea.expose.ssl | default(True) }}"
+
+      _gitea_image: "{{ gitea.image.src | default('quay.io/redhatgov/gitea') }}"
+      _gitea_image_tag: "{{ gitea.image.tag | default('latest') }}"
+      _gitea_image_pull_policy: "{{ gitea.image.pullPolicy | default('IfNotPresent') }}"
+
+      _gitea_persistent: "{{ persistent | default(True) }}"
+      _gitea_volume_size: "{{ gitea.volumeSize | default('1Gi') }}"
+
+      _gitea_postgresql_service_name: "postgresql-{{ ansible_operator_meta.name }}"
+      _gitea_postgresql_database_name: sonardb
+      _gitea_postgresql_user: sonar
+      _gitea_postgresql_password: sonar
+
+      _gitea_memory_request: "{{ gitea.resources.memory.request | default('512Mi') }}"
+      _gitea_memory_limit: "{{ gitea.resources.memory.limit | default('512Mi') }}"
+      _gitea_cpu_request: "{{ gitea.resources.cpu.request | default('200m') }}"
+      _gitea_cpu_limit: "{{ gitea.resources.cpu.limit | default('500m') }}"

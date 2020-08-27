@@ -20,7 +20,7 @@ data:
 
     [database]
     DB_TYPE  = postgres
-    HOST     = {{ _gitea_postgresql_service_name }}:{{ _gitea_postgresql_port }}
+    HOST     = {{ _gitea_postgresql_service_name }}:5432
     NAME     = {{ _gitea_postgresql_database_name }}
     USER     = {{ _gitea_postgresql_user }}
     PASSWD   = {{ _gitea_postgresql_password }}
@@ -30,13 +30,13 @@ data:
     ROOT = /gitea-repositories
 
     [server]
-    ROOT_URL         = {{ 'http' if not _gitea_ssl|d(False)|bool else 'https' }}://{{ _gitea_actual_route }}
-    SSH_DOMAIN       = {{ _gitea_actual_route }}
-    DOMAIN           = {{ _gitea_actual_route }}
+    ROOT_URL         = {{ 'http' if not _gitea_ssl|bool else 'https' }}://{{ _gitea_expose_uri }}
+    SSH_DOMAIN       = {{ _gitea_expose_uri }}
+    DOMAIN           = {{ _gitea_expose_uri }}
     HTTP_PORT        = 3000
     SSH_PORT         = 2022
-    DISABLE_SSH      = false
-    START_SSH_SERVER = true
+    DISABLE_SSH      = true
+    START_SSH_SERVER = false
     LFS_START_SERVER = false
     OFFLINE_MODE     = false
 
@@ -59,7 +59,7 @@ data:
     ENABLE_FEDERATED_AVATAR = true
 
     [openid]
-    ENABLE_OPENID_SIGNIN = false
+    ENABLE_OPENID_SIGNIN = true
     ENABLE_OPENID_SIGNUP = false
 
     [session]

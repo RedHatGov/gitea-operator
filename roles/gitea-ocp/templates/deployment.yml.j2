@@ -46,9 +46,9 @@ spec:
         resources:
           requests:
             cpu: "{{ _gitea_cpu_request }}"
-            memory: "{{ _gitea_memory_request}}"
+            memory: "{{ _gitea_memory_request }}"
           limits:
-            cpu: "{{ _gitea_cpu_limit}}"
+            cpu: "{{ _gitea_cpu_limit }}"
             memory: "{{ _gitea_memory_limit }}"
         volumeMounts:
         - name: gitea-repositories

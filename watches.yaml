@@ -1,5 +1,5 @@
 ---
 - version: v1alpha1
-  group: gpte.opentlc.com
+  group: redhatgov.io
   kind: Gitea
-  playbook: /opt/ansible/playbook.yml
+  playbook: playbooks/gitea-operator.yml

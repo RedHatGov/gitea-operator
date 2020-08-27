@@ -9,10 +9,10 @@ spec:
   to:
     kind: Service
     name: "{{ _gitea_name }}"
-{% if _gitea_route|d("") != "" %}
+{% if _gitea_route != "" %}
   host: "{{ _gitea_route }}"
 {% endif %}
-{% if _gitea_ssl|d(False)|bool %}
+{% if _gitea_ssl|bool %}
   tls:
     insecureEdgeTerminationPolicy: Redirect
     termination: edge
