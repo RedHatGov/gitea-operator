@@ -45,9 +45,9 @@
       _gitea_volume_size: "{{ gitea.volumeSize | default('1Gi') }}"
 
       _gitea_postgresql_service_name: "postgresql-{{ ansible_operator_meta.name }}"
-      _gitea_postgresql_database_name: sonardb
-      _gitea_postgresql_user: sonar
-      _gitea_postgresql_password: sonar
+      _gitea_postgresql_database_name: giteadb
+      _gitea_postgresql_user: giteauser
+      _gitea_postgresql_password: giteapassword
 
       _gitea_memory_request: "{{ gitea.resources.memory.request | default('512Mi') }}"
       _gitea_memory_limit: "{{ gitea.resources.memory.limit | default('512Mi') }}"
