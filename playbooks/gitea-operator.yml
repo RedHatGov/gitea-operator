@@ -13,8 +13,8 @@
     include_role:
       name: ./roles/postgresql-ocp
     vars:
-      _postgresql_namespace: "{{ meta.namespace }}"
-      _postgresql_name: "postgresql-{{ meta.name }}"
+      _postgresql_namespace: "{{ ansible_operator_meta.namespace }}"
+      _postgresql_name: "postgresql-{{ ansible_operator_meta.name }}"
 
       _postgresql_database_name: "giteadb"
       _postgresql_user: "giteauser"
