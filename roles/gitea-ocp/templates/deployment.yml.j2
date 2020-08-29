@@ -51,14 +51,18 @@ spec:
             cpu: "{{ _gitea_cpu_limit }}"
             memory: "{{ _gitea_memory_limit }}"
         volumeMounts:
+{% if _gitea_persistent|bool %}
         - name: gitea-repositories
           mountPath: /gitea-repositories
+{% endif %}
         - name: gitea-config
           mountPath: /home/gitea/conf
       volumes:
+{% if _gitea_persistent|bool %}
       - name: gitea-repositories
         persistentVolumeClaim:
           claimName: "{{ _gitea_name }}-pvc"
+{% endif %}
       - name: gitea-config
         configMap:
           name: "{{ _gitea_name }}-config"
