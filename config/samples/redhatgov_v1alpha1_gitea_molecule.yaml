@@ -1,7 +1,7 @@
 apiVersion: redhatgov.io/v1alpha1
 kind: Gitea
 metadata:
-  name: gitea-sample
+  name: gitea-testing
 spec:
   postgresql:
     image:
