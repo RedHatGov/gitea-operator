@@ -30,12 +30,18 @@ hack/operate.sh
 ----
 
 . Once the Operator pod is running the Operator is ready to start creating Gitea Servers.
-
-. To deploy the above, and also the `config/samples/redhatgov_v1alpha1_gitea.yaml` example CustomResource:
+. To deploy the above, and also one of the `config/samples/redhatgov_v1alpha1_gitea*.yaml` example CustomResources:
 +
 [source,sh]
 ----
-hack/operate.sh -d
+hack/operate.sh --deploy-cr
+----
+
+. To install the operator with RBAC scoped to a specific namespace, deploying a Role and RoleBinding instead of a ClusterRole and ClusterRoleBinding:
++
+[source,sh]
+----
+hack/operate.sh --overlay=namespaced --namespace=mynamespace
 ----
 
 == Deploying a custom Gitea instance using the Operator
@@ -43,7 +49,7 @@ hack/operate.sh -d
 A Gitea instance is deployed by creating a Custom Resource based on the gitea Custom Resource Definition.
 
 .Example
-+
+
 [source,texinfo]
 ----
 apiVersion: redhatgov.io/v1alpha1
@@ -100,7 +106,7 @@ oc get gitea
 oc get route
 ----
 
-. Use the hostname returned in your Web Browser to open the Gitea UI (default User ID is `admin` with password `admin`).
+. Use the hostname returned in your Web Browser to open the Gitea UI (the first user created will be an administrator).
 
 == Deleting a Gitea instance
 
@@ -116,7 +122,7 @@ The Operator adds ownerReference fields to all created objects - which means tha
 == Uninstalling the Gitea Operator
 
 In case you wish to uninstall the Gitea Operator make sure that there are no more Gitea instances running. Once all Gitea instances have been deleted simply delete the operator and its resources with:
-+
+
 [source,sh]
 ----
 hack/operate.sh -r
