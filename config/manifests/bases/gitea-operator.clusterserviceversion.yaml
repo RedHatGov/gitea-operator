@@ -34,6 +34,8 @@ spec:
   - gitea
   - devsecops
   links:
+  - name: Gitea
+    url: https://gitea.io
   - name: Gitea Operator
     url: https://github.com/jharmison-redhat/gitea-operator
   maintainers:
