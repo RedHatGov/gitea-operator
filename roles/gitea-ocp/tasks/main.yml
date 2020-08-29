@@ -40,13 +40,17 @@
     name: "{{ _gitea_name }}"
     namespace: "{{ _gitea_namespace }}"
   register: r_route
+  until:
+    - (r_route.resources|length) > 0
+    - r_route.resources[0].spec.host is defined
+    - r_route.resources[0].spec.host|length > 0
 
 - name: Store Gitea Route Hostname
   when:
   - _gitea_state == "present"
   - _gitea_expose_method == "Route"
   set_fact:
-    _gitea_expose_uri: "{{ r_route.resources[0].status.ingress[0].host }}"
+    _gitea_actual_route: "{{ r_route.resources[0].spec.host }}"
 
 - name: Set Route dependant OpenShift Objects for Gitea to {{ _gitea_state }}
   k8s:
