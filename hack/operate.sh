@@ -435,7 +435,7 @@ else
         undeploy_cr
     fi
 
-    if [ "$BUNDLE"]; then
+    if [ "$BUNDLE" ]; then
         publish_bundle
     fi
 fi
