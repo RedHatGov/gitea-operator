@@ -1,0 +1,15 @@
+apiVersion: redhatgov.io/v1alpha1
+kind: Gitea
+metadata:
+  name: gitea-sample
+spec:
+  postgresql:
+    image:
+      src: postgres
+      tag: '10'
+  gitea:
+    expose:
+      ssl: false
+      kind: Ingress
+      uri: localhost
+  persistent: false
