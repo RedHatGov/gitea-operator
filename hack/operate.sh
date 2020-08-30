@@ -310,7 +310,7 @@ function build_artifacts() {
 function quay_login() {
     if [ -z "$quay_logged_in" ]; then
         if [ -n "$QUAY_USER" -a -n "$QUAY_PASSWORD" ]; then
-            error_run "Logging in to quay.io with provided credentials" docker login -u "$QUAY_USER" -p "$QUAY_PASSWORD" quay.io || return 1
+            error_run "Logging in to quay.io with provided credentials" "docker login -u '$QUAY_USER' -p '$QUAY_PASSWORD' quay.io" || return 1
         else
             warn_run "No credentials provided, assuming cached login..." false ||:
         fi
