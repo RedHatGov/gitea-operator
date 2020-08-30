@@ -26,4 +26,4 @@ deploy:
   provider: script
   script: hack/operate.sh --push-images --bundle --verbose --formatter
   on:
-    branch: master
+    branch: develop
