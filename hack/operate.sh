@@ -405,7 +405,7 @@ function publish_bundle() {
     rm -rf bundle bundle.Dockerfile
     error_run "Building bundle manifests" 'kustomize build --load_restrictor none config/manifests | operator-sdk generate bundle --overwrite --version $VERSION --channels "$CHANNELS"' || return 1
     error_run "Validating bundle" operator-sdk bundle validate ./bundle || return 1
-    error_run "Building bundle image" docker build -f bundle.Dockerfile -t "$IMG-bundle:$VERSION" || return 1
+    error_run "Building bundle image" docker build -f bundle.Dockerfile -t "$IMG-bundle:$VERSION" . || return 1
     error_run "Tagging bundle image with latest" docker tag "$IMG-bundle:$VERSION" "$IMG-bundle:latest" || return 1
     for image in "$IMG-bundle:$VERSION" "$IMG-bundle:latest"; do
         error_run "Pushing image $image" docker push "$image" || return 1
