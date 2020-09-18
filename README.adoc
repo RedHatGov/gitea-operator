@@ -75,14 +75,14 @@ oc get route
 
 == Deleting a Gitea instance
 
-Deleting a Gitea instance and its associated resources is as simple as deleting the gitea object. If you created a Gitea server called `gitea-example` as in the example above it suffices to run the delete command on that resource:
+Deleting a Gitea instance and its associated resources is as simple as deleting the gitea object. If you created a Gitea Custom Resource with `metadata.name` of `gitea-example` it suffices to run the delete command on that resource:
 
 [source,sh]
 ----
 oc delete gitea gitea-example
 ----
 
-The Operator adds ownerReference fields to all created objects - which means that deleting the gitea object also deletes all objects that have been created by the Operator.
+The Operator adds ownerReference fields to all created objects - which means that deleting the Gitea object also deletes all objects that have been created by the Operator.
 
 == Uninstalling the Gitea Operator
 
@@ -92,6 +92,8 @@ In case you wish to uninstall the Gitea Operator make sure that there are no mor
 ----
 hack/operate.sh -r
 ----
+
+OLM uninstallation for OLM-based operators can be handled through the UI, or by deleting the `Subscription`.
 
 == Notes on disconnected installations
 
