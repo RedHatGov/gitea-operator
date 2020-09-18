@@ -21,7 +21,7 @@
       _postgresql_password: "giteapassword"
 
       _postgresql_persistent: "{{ persistent | default(True) }}"
-      _postgresql_volume_size: "{{ postgresql.volumeSize | default('1Gi') }}"
+      _postgresql_volume_size: "{{ postgresql.volume_size | default('1Gi') }}"
 
       _postgresql_image: "{{ postgresql.image.src | default('registry.redhat.io/rhel8/postgresql-10') }}"
       _postgresql_image_tag: "{{ postgresql.image.tag | default('latest') }}"
@@ -39,10 +39,10 @@
 
       _gitea_image: "{{ gitea.image.src | default('quay.io/redhatgov/gitea') }}"
       _gitea_image_tag: "{{ gitea.image.tag | default('latest') }}"
-      _gitea_image_pull_policy: "{{ gitea.image.pullPolicy | default('IfNotPresent') }}"
+      _gitea_image_pull_policy: "{{ gitea.image.pull_policy | default('IfNotPresent') }}"
 
       _gitea_persistent: "{{ persistent | default(True) }}"
-      _gitea_volume_size: "{{ gitea.volumeSize | default('1Gi') }}"
+      _gitea_volume_size: "{{ gitea.volume_size | default('1Gi') }}"
 
       _gitea_postgresql_service_name: "postgresql-{{ ansible_operator_meta.name }}"
       _gitea_postgresql_database_name: giteadb
