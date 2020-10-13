@@ -5,8 +5,8 @@ resources:
 - ../../rbac
 - ../../manager
 
-namespace: gitea-operator-test
-namePrefix: gitea-operator-
+namespace: osdk-test
+namePrefix: osdk-
 
 images:
 - name: testing

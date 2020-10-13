@@ -8,4 +8,5 @@ roleRef:
   name: leader-election-role
 subjects:
 - kind: ServiceAccount
+  namespace: system
   name: sa
