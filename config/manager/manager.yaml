@@ -29,5 +29,5 @@ spec:
             - "--leader-election-id=gitea-operator"
           image: controller:latest
       terminationGracePeriodSeconds: 10
-      serviceAccountName: devsecops-operator-sa
+      serviceAccountName: gitea-operator-sa
 
