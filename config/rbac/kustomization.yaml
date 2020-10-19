@@ -8,3 +8,4 @@ resources:
 - leader_election_role_binding.yaml
 - gitea_editor_role.yaml
 - gitea_viewer_role.yaml
+- service_account.yaml
