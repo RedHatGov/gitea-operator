@@ -90,6 +90,7 @@
 
 - set_fact:
     gitea_pod_name: '{{ gitea_pod.resources[0].metadata.name }}'
+  when: gitea_pod.resources
 
 - name: Create Gitea admin user
   community.kubernetes.k8s_exec:
