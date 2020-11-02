@@ -91,8 +91,25 @@
 - set_fact:
     gitea_pod_name: '{{ gitea_pod.resources[0].metadata.name }}'
 
-- name: Create Gitea admin user
-  community.kubernetes.k8s_exec:
+- name: Check for administrator credential secret
+  k8s_info:
     namespace: "{{ _gitea_namespace }}"
-    pod: '{{ gitea_pod_name }}'
-    command: /home/gitea/gitea --config=/home/gitea/conf/app.ini admin create-user --username '{{ _gitea_admin_user }}' --password '{{ _gitea_admin_password }}' --admin --email '{{ _gitea_admin_email }}' --access-token --must-change-password=false
+    kind: Secret
+    name: "{{ _gitea_name }}-admin-credentials"
+  register: gitea_admin_credentials
+
+- name: Generate administrator password
+  block:
+    - set_fact:
+        gitea_admin_password: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') }}"
+
+    - name: Create gitea-admin-credentials Secret
+      k8s:
+        definition: "{{ lookup('template', 'secret.yml.j2') | from_yaml }}"
+
+    - name: Create Gitea admin user
+      community.kubernetes.k8s_exec:
+        namespace: "{{ _gitea_namespace }}"
+        pod: '{{ gitea_pod_name }}'
+        command: /home/gitea/gitea --config=/home/gitea/conf/app.ini admin create-user --username '{{ _gitea_admin_user }}' --password '{{ gitea_admin_password }}' --admin --email '{{ _gitea_admin_email }}' --access-token --must-change-password=false
+  when: not gitea_admin_credentials.resources

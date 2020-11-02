@@ -4,7 +4,6 @@ _gitea_namespace: gitea
 _gitea_name: gitea
 
 _gitea_admin_user: administrator
-_gitea_admin_password: openshift
 _gitea_admin_email: tssc@redhat.com
 
 _gitea_postgresql_service_name: postgresql
