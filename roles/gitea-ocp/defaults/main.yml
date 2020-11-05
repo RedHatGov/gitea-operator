@@ -3,6 +3,9 @@ _gitea_state: present
 _gitea_namespace: gitea
 _gitea_name: gitea
 
+_gitea_admin_user: administrator
+_gitea_admin_email: tssc@redhat.com
+
 _gitea_postgresql_service_name: postgresql
 _gitea_postgresql_database_name: giteadb
 _gitea_postgresql_user: giteauser
