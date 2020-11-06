@@ -3,3 +3,9 @@
   group: redhatgov.io
   kind: Gitea
   playbook: playbooks/gitea-operator.yml
+
+- version: v1alpha1
+  group: redhatgov.io
+  kind: GiteaUser
+  playbook: playbooks/gitea-user.yml
+  reconcilePeriod: "0"
