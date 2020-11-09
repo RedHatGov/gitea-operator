@@ -5,7 +5,7 @@ metadata:
 spec:
   user:
     username: user1
-    password: ''
+    password: user1pwd
     firstName: Gitea
     lastName: User
     email: user1@sample.net
