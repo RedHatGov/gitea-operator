@@ -21,6 +21,28 @@
   retries: 60
   delay: 5
 
+- name: Create the redhatgov.io/v1alpha1.GiteaUser
+  k8s:
+    state: present
+    namespace: '{{ namespace }}'
+    definition: "{{ lookup('template', '/'.join([samples_dir, cr_file])) | from_yaml }}"
+    wait: yes
+    wait_timeout: 60
+    wait_condition:
+      type: Running
+      reason: Successful
+      status: "True"
+  vars:
+    cr_file: 'redhatgov_v1alpha1_gitea_user_molecule.yaml'
+
+- name: Remove the redhatgov.io/v1alpha1.GiteaUser
+  k8s:
+    state: absent
+    namespace: '{{ namespace }}'
+    definition: "{{ lookup('template', '/'.join([samples_dir, cr_file])) | from_yaml }}"
+  vars:
+    cr_file: 'redhatgov_v1alpha1_gitea_user_molecule.yaml'
+
 - name: Remove the redhatgov.io/v1alpha1.Gitea
   k8s:
     state: absent
