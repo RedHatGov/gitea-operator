@@ -8,6 +8,7 @@ rules:
   - redhatgov.io
   resources:
   - giteas
+  - giteausers
   verbs:
   - get
   - list
@@ -16,5 +17,6 @@ rules:
   - redhatgov.io
   resources:
   - giteas/status
+  - giteausers/status
   verbs:
   - get
