@@ -1,0 +1,20 @@
+---
+- include: config.yml
+
+- name: Get Gitea pod info
+  k8s_info:
+    api_version: v1
+    kind: Pod
+    namespace: '{{ _gitea_namespace }}'
+    label_selectors:
+      - "app={{ _gitea_name }}"
+  register: gitea_pod
+
+- set_fact:
+    gitea_pod_name: '{{ gitea_pod.resources[0].metadata.name }}'
+
+- name: Create Gitea user
+  community.kubernetes.k8s_exec:
+    namespace: "{{ _gitea_namespace }}"
+    pod: '{{ gitea_pod_name }}'
+    command: /home/gitea/gitea --config=/home/gitea/conf/app.ini admin create-user --username '{{ _giteauser.username }}' --password '{{ _giteauser.password }}' --email '{{ _giteauser.email }}' --access-token --must-change-password=false

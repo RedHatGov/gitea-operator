@@ -1,0 +1,11 @@
+apiVersion: redhatgov.io/v1alpha1
+kind: GiteaUser
+metadata:
+  name: giteauser1
+spec:
+  user:
+    username: user1
+    password: user1pwd
+    firstName: Gitea
+    lastName: User
+    email: user1@sample.net
