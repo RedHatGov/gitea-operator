@@ -1,0 +1,30 @@
+---
+- name: Check for Gitea CR object
+  k8s_info:
+    api_version: redhatgov.io/v1alpha1
+    namespace: "{{ _gitea_namespace }}"
+    kind: Gitea
+  register: gitea_cr_object
+
+- set_fact:
+    gitea_name: "{{ gitea_cr_object.resources[0].metadata.name }}"
+  when: gitea_cr_object.resources
+
+- fail:
+    msg: "Gitea CR does not exist. Please create Gitea CR service."
+  when: gitea_name is undefined
+
+- name: Verify that Gitea application is available
+  when:
+  - _gitea_name is defined
+  k8s_facts:
+    api_version: apps/v1
+    kind: Deployment
+    name: "{{ gitea_name }}"
+    namespace: "{{ _gitea_namespace }}"
+  register: r_deployment
+  until:
+  - r_deployment.resources[0].status.availableReplicas is defined
+  - r_deployment.resources[0].status.availableReplicas == 1
+  retries: 50
+  delay: 10

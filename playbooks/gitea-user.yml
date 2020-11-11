@@ -1,0 +1,17 @@
+---
+# Persistent Gitea deployment playbook.
+
+# The following variables come from the ansible-operator
+# - ansible_operator_meta.namespace
+
+- hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: Add Gitea User
+    include_role:
+      name: ./roles/gitea-ocp
+      tasks_from: user
+      defaults_from: config
+    vars:
+      _gitea_namespace: "{{ ansible_operator_meta.namespace }}"
+      _giteauser: "{{ user }}"
