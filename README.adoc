@@ -115,3 +115,32 @@ The places where you must update those sources are then, respectively:
 If you intend on using `hack/operate.sh` it expects you to be in a development environment. Operator installation from this script therefore expects access to the internet. This comes with one extra concern: If `kustomize` isn't in your path, it tries to download it from the internet and save it locally into a `.gitignore`d folder. If you intend on using `hack/operate.sh` to install the operator, you should also bring `kustomize` and place it in the `$PATH` of the user who will be running the script. Additionally, in order to install the operator with `hack/operate.sh` you'll need to make the following change:
 
 . `hack/operate.conf`: IMG should point to the gitea-operator image in your environment
+
+== Adding an additional Certificate Authority trust bundle
+
+The operator can mount an additional trust bundle `ConfigMap` into the Gitea pod. Create your `ConfigMap` and set the `spec.gitea.trustBundleConfigMap` parameter to the name of the `ConfigMap`. The `ConfigMap` must be in the
+same namespace as the `Gitea` custom resource.
+
+The CA bundle must be included under a key named `ca-bundle.crt` within the `ConfigMap`. The resulting CA bundle will be mounted at `/etc/pki/tls/certs/ca-bundle.crt` in the Gitea pod.
+
+Example:
+
+```
+apiVersion: redhatgov.io/v1alpha1
+kind: Gitea
+metadata:
+  name: gitea-sample
+spec:
+  gitea:
+    expose:
+      kind: Ingress
+      ssl: true
+      uri: gitea-sample.example.com
+    image:
+      pullPolicy: Always
+      src: quay.io/redhatgov/gitea
+      tag: latest
+    trustBundleConfigMap: user-ca-bundle
+  postgresql:
+    volumeSize: 1Gi
+```

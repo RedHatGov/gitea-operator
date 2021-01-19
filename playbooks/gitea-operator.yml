@@ -53,3 +53,5 @@
       _gitea_memory_limit: "{{ gitea.resources.memory.limit | default('512Mi') }}"
       _gitea_cpu_request: "{{ gitea.resources.cpu.request | default('200m') }}"
       _gitea_cpu_limit: "{{ gitea.resources.cpu.limit | default('500m') }}"
+
+      _gitea_trust_bundle_configmap: "{{ gitea.trust_bundle_config_map | default('') }}"
