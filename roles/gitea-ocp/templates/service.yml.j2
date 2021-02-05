@@ -13,5 +13,9 @@ spec:
     port: 3000
     protocol: TCP
     targetPort: 3000
+  - name: gitea-ssh
+    port: 2022
+    protocol: TCP
+    targetPort: 2022
   sessionAffinity: None
   type: ClusterIP
