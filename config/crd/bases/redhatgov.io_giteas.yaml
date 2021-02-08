@@ -67,6 +67,12 @@ spec:
                         description: Defines SSL/TLS state, if your IngressController/Router supports it
                         type: boolean
                         default: True
+                      externalIp:
+                        description: |
+                          Defines whether the gitea service should request an external IP address.
+                          Required for external SSH.
+                        type: boolean
+                        default: False
                   image:
                     description: Defines the ways in which the Gitea image should be sourced and managed
                     type: object

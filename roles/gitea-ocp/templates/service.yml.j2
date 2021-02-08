@@ -18,4 +18,6 @@ spec:
     protocol: TCP
     targetPort: 2022
   sessionAffinity: None
-  type: ClusterIP
+{% if _gitea_external_ssh|bool %}
+  type: LoadBalancer
+{% endif %}
