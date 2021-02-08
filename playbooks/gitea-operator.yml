@@ -36,7 +36,7 @@
       _gitea_expose_method: "{{ gitea.expose.kind | default('Route') }}"
       _gitea_expose_uri: "{{ gitea.expose.uri | default('') }}"
       _gitea_ssl: "{{ gitea.expose.ssl | default(True) }}"
-      _gitea_external_ip: "{{ gitea.expose.external_ip | default(False) }}"
+      _gitea_load_balancer: "{{ gitea.expose.load_balancer | default(False) }}"
 
       _gitea_image: "{{ gitea.image.src | default('quay.io/redhatgov/gitea') }}"
       _gitea_image_tag: "{{ gitea.image.tag | default('latest') }}"
