@@ -52,6 +52,15 @@
   set_fact:
     _gitea_actual_route: "{{ r_route.resources[0].spec.host }}"
 
+- name: Get External IP for SSH
+  k8s_info:
+    api_version: v1
+    kind: Service
+    name: "{{ _gitea_name }}"
+    namespace: "{{ _gitea_namespace }}"
+  register: gitea_service
+  when: _gitea_external_ip
+
 - name: Set Route dependant OpenShift Objects for Gitea to {{ _gitea_state }}
   k8s:
     state: "{{ _gitea_state }}"
