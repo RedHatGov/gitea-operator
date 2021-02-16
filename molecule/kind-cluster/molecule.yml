@@ -34,8 +34,8 @@ provisioner:
         kustomize: ${KUSTOMIZE_PATH:-kustomize}
         scope: cluster
   env:
-    K8S_AUTH_KUBECONFIG: ${KUBECONFIG:-"~/.kube/config"}
-    KUBECONFIG: ${KUBECONFIG:-"~/.kube/config"}
+    K8S_AUTH_KUBECONFIG: ${KUBECONFIG:-$HOME/.kube/config}
+    KUBECONFIG: ${KUBECONFIG:-$HOME/.kube/config}
 verifier:
   name: ansible
   lint: |
