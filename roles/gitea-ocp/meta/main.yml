@@ -14,4 +14,6 @@ galaxy_info:
     - repository
   platforms:
     - name: GenericLinux
+  collections:
+    - community.kubernetes
 dependencies: []
