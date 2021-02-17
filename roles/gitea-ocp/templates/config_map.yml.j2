@@ -31,7 +31,7 @@ data:
 
     [server]
     ROOT_URL         = {{ 'http' if not _gitea_ssl|bool else 'https' }}://{{ _gitea_actual_route|default(_gitea_expose_uri) }}
-    SSH_DOMAIN       = {{ gitea_service.resources[0].status.loadBalancer.ingress[0].hostname | default(_gitea_expose_uri) }}
+    SSH_DOMAIN       = {{ _gitea_lb_address|default(_gitea_actual_route|default(_gitea_expose_uri)) }}
     DOMAIN           = {{ _gitea_actual_route|default(_gitea_expose_uri) }}
     HTTP_PORT        = 3000
     SSH_PORT         = 2022
