@@ -88,24 +88,28 @@
     state: present
     namespace: '{{ namespace }}-alt'
     definition: "{{ lookup('template', '/'.join([samples_dir, cr_file])) | from_yaml | combine(namespace_mod) }}"
-    wait: yes
-    wait_timeout: 300
-    wait_condition:
-      type: Running
-      reason: Successful
-      status: "True"
   vars:
     cr_file: 'redhatgov_v1alpha1_gitea_molecule.yaml'
     namespace_mod:
       metadata:
         namespace: '{{ namespace }}-alt'
         name: gitea-sample-alt
-  ignore_errors: true
+
+- name: Wait for CR to be Reconciled
+  k8s_info:
+    api_version: v1alpha1
+    kind: Gitea
+    namespace: '{{ namespace }}-alt'
+    name: gitea-sample-alt
   register: namespace_modded_cr
+  until: namespace_modded_cr.resources[0].status | json_query("conditions[?(@.reason=='Successful')]")
+  retries: 5
+  delay: 60
+  ignore_errors: true
 
 - name: Verify that Gitea failed to be created from the CR when appropriate
   assert:
-    that: namespace_modded_cr.failed == (scope == "namespace")
+    that: namespace_modded_cr.resources[0].status is not defined == (scope == "namespace")
 
 # TODO:
 #   - Validate Gitea can be used
