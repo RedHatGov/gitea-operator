@@ -18,7 +18,7 @@ items:
       targetPort: 3000
     sessionAffinity: None
     type: ClusterIP
-{% if _gitea_external_ssh|bool %}
+{% if _gitea_load_balancer|bool %}
 - kind: Service
   apiVersion: v1
   metadata:
