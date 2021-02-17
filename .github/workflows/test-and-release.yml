@@ -9,8 +9,7 @@ on:
       - main
   pull_request:
     branches:
-      - '**'
-      - '!develop'
+      - develop
 
 jobs:
   test-cluster:
