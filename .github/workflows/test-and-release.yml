@@ -68,9 +68,11 @@ jobs:
           password: ${{ secrets.QUAY_PASSWORD }}
       - name: Build, bundle, and push (develop)
         run: |
+          pip3 install --user --upgrade setuptools wheel pip
           hack/operate.sh --push-images --bundle --develop --verbose --formatter
         if: github.ref == 'refs/heads/develop'
       - name: Build, bundle, and push
         run: |
+          pip3 install --user --upgrade setuptools wheel pip
           hack/operate.sh --push-images --bundle --extra-tag=latest --verbose --formatter
         if: github.ref == 'refs/heads/main'
