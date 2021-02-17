@@ -60,7 +60,7 @@ if which formatter &>/dev/null; then
     . $(which formatter)
 else
     if echo "$*" | grep -qF -- '--formatter'; then
-        mkdir +p ~/.local/bin/formatter
+        mkdir -p ~/.local/bin
         export PATH=~/.local/bin:"$PATH"
         curl -o ~/.local/bin/formatter https://raw.githubusercontent.com/solacelost/output-formatter/modern-only/formatter
         chmod +x ~/.local/bin/formatter
