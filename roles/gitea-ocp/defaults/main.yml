@@ -29,3 +29,5 @@ _gitea_expose_method: Route
 _gitea_expose_uri: ""
 _gitea_route: "{{ _gitea_expose_uri }}"
 _gitea_ssl: true
+
+_gitea_trust_bundle_configmap: ''

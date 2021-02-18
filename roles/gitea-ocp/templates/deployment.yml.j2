@@ -57,9 +57,18 @@ spec:
         - name: gitea-repositories
           mountPath: /gitea-repositories
 {% endif %}
+{% if _gitea_trust_bundle_configmap != '' %}
+        - name: gitea-trust-bundle
+          mountPath: /etc/pki/tls/certs
+{% endif %}
         - name: gitea-config
           mountPath: /home/gitea/conf
       volumes:
+{% if _gitea_trust_bundle_configmap != '' %}
+      - name: gitea-trust-bundle
+        configMap:
+          name: "{{ _gitea_trust_bundle_configmap }}"
+{% endif %}
 {% if _gitea_persistent|bool %}
       - name: gitea-repositories
         persistentVolumeClaim:

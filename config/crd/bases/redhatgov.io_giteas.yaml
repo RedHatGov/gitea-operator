@@ -47,6 +47,13 @@ spec:
                 description: Defines the desired state of the Gitea Deployment
                 type: object
                 properties:
+                  trustBundleConfigMap:
+                    description: |
+                      The name of a ConfigMap of CA certificates to mount into the Gitea pod. The ConfigMap
+                      should have a single key named ca-bundle.crt. This key has a collection of CA certificates
+                      as its value.
+                    type: string
+                    default: ''
                   expose:
                     description: Defines the ways in which Gitea should be exposed
                     type: object
