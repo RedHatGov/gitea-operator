@@ -23,15 +23,29 @@ spec:
         control-plane: controller-manager
     spec:
       containers:
-        - name: manager
-          args:
-            - "--enable-leader-election"
-            - "--leader-election-id=gitea-operator"
-          image: controller:latest
-          env:
-          - name: WATCH_NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.annotations['olm.targetNamespaces']
+      - name: manager
+        args:
+        - "--enable-leader-election"
+        - "--leader-election-id=gitea-operator"
+        image: controller:latest
+        env:
+        - name: ANSIBLE_GATHERING
+          value: explicit
+        - name: WATCH_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['olm.targetNamespaces']
+        livenessProbe:
+          httpGet:
+            path: /readyz
+            port: 6789
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 6789
+          initialDelaySeconds: 5
+          periodSeconds: 10
       terminationGracePeriodSeconds: 10
       serviceAccountName: gitea-operator-sa

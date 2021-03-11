@@ -17,4 +17,10 @@
   community.kubernetes.k8s_exec:
     namespace: "{{ _gitea_namespace }}"
     pod: '{{ gitea_pod_name }}'
-    command: /home/gitea/gitea --config=/home/gitea/conf/app.ini admin create-user --username '{{ _giteauser.username }}' --password '{{ _giteauser.password }}' --email '{{ _giteauser.email }}' --access-token --must-change-password=false
+    command: >
+      /home/gitea/gitea --config=/home/gitea/conf/app.ini
+      admin create-user --access-token
+      --username '{{ _giteauser.username }}'
+      --password '{{ _giteauser.password }}'
+      --email '{{ _giteauser.email }}'
+      --must-change-password=false

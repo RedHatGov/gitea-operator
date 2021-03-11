@@ -22,10 +22,12 @@ _gitea_cpu_limit: 500m
 _gitea_wait_for_init: true
 
 _gitea_image: quay.io/reghatgov/gitea
-_gitea_image_tag: latest
+_gitea_image_tag: "1.13"
 _gitea_image_pull_policy: IfNotPresent
 
 _gitea_expose_method: Route
 _gitea_expose_uri: ""
 _gitea_route: "{{ _gitea_expose_uri }}"
 _gitea_ssl: true
+
+_gitea_trust_bundle_configmap: ''

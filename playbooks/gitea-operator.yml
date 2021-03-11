@@ -36,6 +36,7 @@
       _gitea_expose_method: "{{ gitea.expose.kind | default('Route') }}"
       _gitea_expose_uri: "{{ gitea.expose.uri | default('') }}"
       _gitea_ssl: "{{ gitea.expose.ssl | default(True) }}"
+      _gitea_load_balancer: "{{ gitea.expose.load_balancer | default(False) }}"
 
       _gitea_image: "{{ gitea.image.src | default('quay.io/redhatgov/gitea') }}"
       _gitea_image_tag: "{{ gitea.image.tag | default('latest') }}"
@@ -53,3 +54,5 @@
       _gitea_memory_limit: "{{ gitea.resources.memory.limit | default('512Mi') }}"
       _gitea_cpu_request: "{{ gitea.resources.cpu.request | default('200m') }}"
       _gitea_cpu_limit: "{{ gitea.resources.cpu.limit | default('500m') }}"
+
+      _gitea_trust_bundle_configmap: "{{ gitea.trust_bundle_config_map | default('') }}"

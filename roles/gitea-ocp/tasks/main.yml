@@ -52,6 +52,20 @@
   set_fact:
     _gitea_actual_route: "{{ r_route.resources[0].spec.host }}"
 
+- name: Get external hostname from Service if external SSH is needed
+  block:
+  - name: Recover LB service details
+    k8s_info:
+      api_version: v1
+      kind: Service
+      name: "{{ _gitea_name }}-ssh"
+      namespace: "{{ _gitea_namespace }}"
+    register: _gitea_lb_service
+  - name: Register LB service hostname
+    set_fact:
+      _gitea_lb_address: '{{ _gitea_lb_service.resources[0].status.loadBalancer.ingress[0].hostname }}'
+  when: _gitea_load_balancer
+
 - name: Set Route dependant OpenShift Objects for Gitea to {{ _gitea_state }}
   k8s:
     state: "{{ _gitea_state }}"
@@ -85,7 +99,7 @@
     kind: Pod
     namespace: '{{ _gitea_namespace }}'
     label_selectors:
-      - "app={{ _gitea_name }}"
+    - "app={{ _gitea_name }}"
   register: gitea_pod
 
 - set_fact:
@@ -100,16 +114,22 @@
 
 - name: Generate administrator password
   block:
-    - set_fact:
-        gitea_admin_password: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') }}"
+  - set_fact:
+      gitea_admin_password: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') }}"
 
-    - name: Create gitea-admin-credentials Secret
-      k8s:
-        definition: "{{ lookup('template', 'secret.yml.j2') | from_yaml }}"
+  - name: Create gitea-admin-credentials Secret
+    k8s:
+      definition: "{{ lookup('template', 'secret.yml.j2') | from_yaml }}"
 
-    - name: Create Gitea admin user
-      community.kubernetes.k8s_exec:
-        namespace: "{{ _gitea_namespace }}"
-        pod: '{{ gitea_pod_name }}'
-        command: /home/gitea/gitea --config=/home/gitea/conf/app.ini admin create-user --username '{{ _gitea_admin_user }}' --password '{{ gitea_admin_password }}' --admin --email '{{ _gitea_admin_email }}' --access-token --must-change-password=false
+  - name: Create Gitea admin user
+    community.kubernetes.k8s_exec:
+      namespace: "{{ _gitea_namespace }}"
+      pod: '{{ gitea_pod_name }}'
+      command: >
+        /home/gitea/gitea --config=/home/gitea/conf/app.ini
+        admin create-user --admin --access-token
+        --username '{{ _gitea_admin_user }}'
+        --password '{{ gitea_admin_password }}'
+        --email '{{ _gitea_admin_email }}'
+        --must-change-password=false
   when: not gitea_admin_credentials.resources

@@ -47,6 +47,13 @@ spec:
                 description: Defines the desired state of the Gitea Deployment
                 type: object
                 properties:
+                  trustBundleConfigMap:
+                    description: |
+                      The name of a ConfigMap of CA certificates to mount into the Gitea pod. The ConfigMap
+                      should have a single key named ca-bundle.crt. This key has a collection of CA certificates
+                      as its value.
+                    type: string
+                    default: ''
                   expose:
                     description: Defines the ways in which Gitea should be exposed
                     type: object
@@ -67,6 +74,12 @@ spec:
                         description: Defines SSL/TLS state, if your IngressController/Router supports it
                         type: boolean
                         default: True
+                      loadBalancer:
+                        description: |
+                          Defines whether the gitea service should create an exernal load-balancer
+                          in supported cloud providers. Required for external SSH.
+                        type: boolean
+                        default: False
                   image:
                     description: Defines the ways in which the Gitea image should be sourced and managed
                     type: object
