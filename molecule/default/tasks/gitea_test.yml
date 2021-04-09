@@ -109,7 +109,10 @@
 
 - name: Verify that Gitea failed to be created from the CR when appropriate
   assert:
-    that: namespace_modded_cr.resources[0].status is not defined == (scope == "namespace")
+    that: namespace_modded_success == namespace_modded_expected
+  vars:
+    namespace_modded_success: '{{ namespace_modded_cr.resources[0].status is defined }}'
+    namespace_modded_expected: '{{ scope == "cluster" }}'
 
 # TODO:
 #   - Validate Gitea can be used

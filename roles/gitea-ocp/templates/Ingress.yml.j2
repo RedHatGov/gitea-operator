@@ -5,6 +5,8 @@ metadata:
   namespace: "{{ _gitea_namespace }}"
   labels:
     app: "{{ _gitea_name }}"
+  annotations:
+    kubernetes.io/ingress.class: {{ _gitea_ingress_class }}
 spec:
 {% if _gitea_ssl|bool %}
   tls:
