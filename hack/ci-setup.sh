@@ -10,14 +10,11 @@ export KUBECONFIG=$HOME/.kube/config
 pip3 install --user --upgrade setuptools wheel pip
 
 # Dependencies for test environment
-pip3 install --user docker==4.2.2 ansible molecule ansible-lint yamllint flake8 openshift jmespath
+pip3 install --user -r requirements/test-requirements.txt
 
 # Ansible dependencies
-ansible-galaxy collection install -r requirements.yml
-
-# Kind CLI (for loading images into cluster)
-curl -Lo $HOME/.local/bin/kind https://kind.sigs.k8s.io/dl/v0.9.0/kind-linux-amd64
-chmod +x $HOME/.local/bin/kind
+pip3 install --user --upgrade -r requirements/requirements.txt
+ansible-galaxy collection install -r requirements/requirements.yml
 
 # Helm CLI (for loading Ingress)
 curl -Lo $HOME/helm.tgz https://get.helm.sh/helm-v3.5.2-linux-amd64.tar.gz
