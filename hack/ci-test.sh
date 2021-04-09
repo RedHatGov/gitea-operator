@@ -6,5 +6,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export OPERATORDIR="$(pwd)"
 make kustomize
 [ -f ./bin/kustomize ] && export KUSTOMIZE_PATH="$(realpath ./bin/kustomize)" || export KUSTOMIZE_PATH="$(which kustomize)"
+kustomize version ||:
+./bin/kustomize version
 
 TEST_OPERATOR_NAMESPACE=default molecule test -s $1

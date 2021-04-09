@@ -50,11 +50,11 @@ uninstall: kustomize
 # Deploy controller in the configured Kubernetes cluster in ~/.kube/config
 deploy: kustomize
 	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
-	$(KUSTOMIZE) build --load_restrictor none config/${OVERLAY} | kubectl apply -f -
+	$(KUSTOMIZE) build --load-restrictor LoadRestrictionsNone config/${OVERLAY} | kubectl apply -f -
 
 # Undeploy controller in the configured Kubernetes cluster in ~/.kube/config
 undeploy: kustomize
-	$(KUSTOMIZE) build --load_restrictor none config/${OVERLAY} | kubectl delete -f -
+	$(KUSTOMIZE) build --load-restrictor LoadRestrictionsNone config/${OVERLAY} | kubectl delete -f -
 
 # Build the docker image
 docker-build:
@@ -69,22 +69,18 @@ SHELL := env PATH=$(PATH) /bin/sh
 OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 ARCH := $(shell uname -m | sed 's/x86_64/amd64/')
 
-# Download kustomize locally if necessary, preferring the $(pwd)/bin path over global if both exist.
-.PHONY: kustomize
+# Download kustomize locally
 KUSTOMIZE = $(shell pwd)/bin/kustomize
-kustomize:
-ifeq (,$(wildcard $(KUSTOMIZE)))
-ifeq (,$(shell which kustomize 2>/dev/null))
+bin/kustomize:
 	@{ \
-	set -e ;\
-	mkdir -p $(dir $(KUSTOMIZE)) ;\
-	curl -sSLo - https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v3.5.4/kustomize_v3.5.4_$(OS)_$(ARCH).tar.gz | \
-	tar xzf - -C bin/ ;\
+		set -e ;\
+		mkdir -p $(dir $(KUSTOMIZE)) ;\
+		curl -sSLo - https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v4.0.5/kustomize_v4.0.5_$(OS)_$(ARCH).tar.gz | \
+		tar xzf - -C $(dir $(KUSTOMIZE)) ;\
 	}
-else
-KUSTOMIZE = $(shell which kustomize)
-endif
-endif
+
+.PHONY: kustomize
+kustomize: bin/kustomize
 
 # Download ansible-operator locally if necessary, preferring the $(pwd)/bin path over global if both exist.
 .PHONY: ansible-operator

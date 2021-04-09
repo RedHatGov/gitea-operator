@@ -6,6 +6,6 @@
   tasks:
   - name: Install nginx Ingress onto kind
     command: >
-      helm install kind-ingress stable/nginx-ingress
+      helm install kind-ingress ingress-nginx/ingress-nginx
       --set controller.service.type=NodePort
       --set controller.service.nodePorts.http=30080
