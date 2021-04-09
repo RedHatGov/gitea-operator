@@ -1,10 +1,22 @@
 #!/bin/bash -ex
 # Installs dependencies needed to run the tests in CI environment
 
+function ll {
+    ls -halF "${@}"
+}
 
 mkdir -p $HOME/.local/bin
 export PATH="$HOME/.local/bin:$PATH"
-export KUBECONFIG=$HOME/.kube/config
+export KUBECONFIG=${KUBECONFIG:-$HOME/.kube/config}
+echo $KUBECONFIG
+ll $HOME/.kube
+kubectl config current-context
+kind version
+clusters=$(kind get clusters)
+for cluster in $clusters; do
+    kind get nodes --name $cluster
+    kind get kubeconfig --name $cluster
+done
 
 # Basic pip prereqs
 pip3 install --user --upgrade setuptools wheel pip
