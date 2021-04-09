@@ -31,21 +31,24 @@
             - api_version: v1
               kind: ConfigMap
           register: debug_resources
+          ignore_errors: true
 
         - name: Retrieve controller Pod logs
           k8s_log:
-            name: '{{ item.metadata.name }}'
             namespace: '{{ namespace }}'
+            label_selectors:
+              - '{{ ctrl_label }}'
             container: manager
-          loop: "{{ q('k8s', api_version='v1', kind='Pod', namespace=namespace, label_selector=ctrl_label) }}"
           register: debug_controller_logs
+          ignore_errors: true
 
         - name: Retrieve application Pod logs
           k8s_log:
-            name: '{{ item.metadata.name }}'
             namespace: '{{ namespace }}'
-          loop: "{{ q('k8s', api_version='v1', kind='Pod', namespace=namespace, label_selector='app=gitea-testing') }}"
+            label_selectors:
+              - app=gitea-testing
           register: debug_app_logs
+          ignore_errors: true
 
         - name: Output gathered resources
           debug:
@@ -54,7 +57,9 @@
         - name: Output gathered logs
           debug:
             var: item.log_lines
-          loop: '{{ debug_controller_logs.results + debug_app_logs.results }}'
+          loop:
+            - debug_controller_logs
+            - debug_app_logs
 
         - name: Re-emit failure
           vars:
