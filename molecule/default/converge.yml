@@ -4,6 +4,13 @@
   connection: local
   gather_facts: no
   tasks:
+    - name: Confirm things are populated
+      debug:
+        var:
+          namespace: '{{ namespace }}'
+          KUBECONFIG: '{{ lookup("env", "KUBECONFIG") }}'
+          KUBECONFIG_CONTENT: '{{ lookup("file", lookup("env", "KUBECONFIG")) }}'
+
     - name: Create Namespace
       community.kubernetes.k8s:
         api_version: v1
