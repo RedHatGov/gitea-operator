@@ -4,6 +4,9 @@
   connection: local
   gather_facts: false
   tasks:
+  - name: Output useful debugging info
+    setup:
+
   - name: Install nginx Ingress onto kind
     command: >
       helm install kind-ingress ingress-nginx/ingress-nginx
