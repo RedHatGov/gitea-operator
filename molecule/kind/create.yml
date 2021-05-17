@@ -4,6 +4,12 @@
   connection: local
   gather_facts: false
   tasks:
+  - name: Gather useful debugging info
+    setup:
+  - name: Output useful debugging info
+    debug:
+      var: ansible_facts
+
   - name: Install nginx Ingress onto kind
     command: >
       helm install kind-ingress ingress-nginx/ingress-nginx

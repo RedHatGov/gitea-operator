@@ -1,6 +1,6 @@
 ---
 - name: Create the redhatgov.io/v1alpha1.Gitea
-  k8s:
+  community.kubernetes.k8s:
     state: present
     namespace: '{{ namespace }}'
     definition: "{{ lookup('template', '/'.join([samples_dir, cr_file])) | from_yaml }}"
@@ -22,7 +22,7 @@
   delay: 5
 
 - name: Create the redhatgov.io/v1alpha1.GiteaUser
-  k8s:
+  community.kubernetes.k8s:
     state: present
     namespace: '{{ namespace }}'
     definition: "{{ lookup('template', '/'.join([samples_dir, cr_file])) | from_yaml }}"
@@ -30,7 +30,7 @@
     cr_file: 'redhatgov_v1alpha1_gitea_user_molecule.yaml'
 
 - name: Remove the redhatgov.io/v1alpha1.GiteaUser
-  k8s:
+  community.kubernetes.k8s:
     state: absent
     namespace: '{{ namespace }}'
     definition: "{{ lookup('template', '/'.join([samples_dir, cr_file])) | from_yaml }}"
@@ -38,7 +38,7 @@
     cr_file: 'redhatgov_v1alpha1_gitea_user_molecule.yaml'
 
 - name: Remove the redhatgov.io/v1alpha1.Gitea
-  k8s:
+  community.kubernetes.k8s:
     state: absent
     namespace: '{{ namespace }}'
     definition: "{{ lookup('template', '/'.join([samples_dir, cr_file])) | from_yaml }}"
@@ -46,7 +46,7 @@
     cr_file: 'redhatgov_v1alpha1_gitea_molecule.yaml'
 
 - name: Attempt to apply an invalid configurations for Gitea
-  k8s:
+  community.kubernetes.k8s:
     state: present
     namespace: '{{ namespace }}'
     definition: "{{ lookup('template', '/'.join([samples_dir, cr_file])) | from_yaml | combine(cr_fault) }}"
@@ -84,7 +84,7 @@
     that: False not in (faulty_crs | json_query('results[].failed') | list)
 
 - name: Apply the Gitea CR in an alternate namespace
-  k8s:
+  community.kubernetes.k8s:
     state: present
     namespace: '{{ namespace }}-alt'
     definition: "{{ lookup('template', '/'.join([samples_dir, cr_file])) | from_yaml | combine(namespace_mod) }}"
@@ -96,7 +96,7 @@
         name: gitea-sample-alt
 
 - name: Wait for CR to be Reconciled
-  k8s_info:
+  community.kubernetes.k8s_info:
     api_version: v1alpha1
     kind: Gitea
     namespace: '{{ namespace }}-alt'

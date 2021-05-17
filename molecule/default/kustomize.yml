@@ -8,7 +8,7 @@
   changed_when: false
 
 - name: Set resources to {{ state }}
-  k8s:
+  community.kubernetes.k8s:
     definition: '{{ item }}'
     state: '{{ state }}'
     wait: yes

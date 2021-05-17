@@ -3,16 +3,13 @@
   hosts: localhost
   connection: local
   gather_facts: false
-  collections:
-    - community.kubernetes
-
   tasks:
     - import_tasks: kustomize.yml
       vars:
         state: absent
 
     - name: Destroy Namespace
-      k8s:
+      community.kubernetes.k8s:
         api_version: v1
         kind: Namespace
         name: '{{ namespace }}'

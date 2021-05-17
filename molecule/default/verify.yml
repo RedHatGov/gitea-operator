@@ -3,9 +3,6 @@
   hosts: localhost
   connection: local
   gather_facts: no
-  collections:
-    - community.kubernetes
-
   vars:
     ctrl_label: control-plane=controller-manager
 
@@ -17,7 +14,7 @@
             - tasks/*_test.yml
       rescue:
         - name: Retrieve relevant resources
-          k8s_info:
+          community.kubernetes.k8s_info:
             api_version: '{{ item.api_version }}'
             kind: '{{ item.kind }}'
             namespace: '{{ namespace }}'
@@ -34,7 +31,7 @@
           ignore_errors: true
 
         - name: Retrieve controller Pod logs
-          k8s_log:
+          community.kubernetes.k8s_log:
             namespace: '{{ namespace }}'
             label_selectors:
               - '{{ ctrl_label }}'
@@ -43,7 +40,7 @@
           ignore_errors: true
 
         - name: Retrieve application Pod logs
-          k8s_log:
+          community.kubernetes.k8s_log:
             namespace: '{{ namespace }}'
             label_selectors:
               - app=gitea-testing
