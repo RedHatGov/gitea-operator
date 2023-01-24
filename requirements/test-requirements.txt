@@ -1,5 +1,5 @@
 docker==4.2.2
-ansible==2.9.15 # aligns with operator-sdk version
+ansible==7.0.0 # aligns with operator-sdk version
 requests>=2.25,<2.26
 molecule>=3.3,<3.4
 ansible-lint>=5.0,<6.0
